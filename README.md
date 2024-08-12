@@ -4,3 +4,6 @@ This repository features scripts for practicing web scraping (R and Python) and 
 # Notes
 - R may not be essential for this project.
 - Alternative libraries for retrieving images from links are available, but I used the chosen one due to installation constraints.
+
+# Future works
+- Add requirements
