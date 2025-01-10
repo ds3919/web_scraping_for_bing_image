@@ -1,13 +1,10 @@
-import io
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
-from PIL import Image, ImageTk
-import requests
-import csv
 import pandas as pd
+from tqdm import tqdm
 import time
 
 csv_path = 'image_results.csv'
@@ -18,11 +15,15 @@ pages = df['urls'].tolist()
 categories = df['word'].tolist()
 current_page_index = 0
 
-driver = webdriver.Chrome()
+options = webdriver.ChromeOptions()
+options.add_argument("--headless")
+options.add_argument("--disable-gpu")
+options.add_argument("--window-size=1920,1080")
+driver = webdriver.Chrome(options=options)
 
 images_url_list = []
 
-for cat, link in zip(categories, pages):
+for cat, link in tqdm(zip(categories, pages), total=len(categories)):
 
     url = link
     driver.get(url)
@@ -45,15 +46,12 @@ for cat, link in zip(categories, pages):
         except StaleElementReferenceException:
             images = driver.find_elements(By.TAG_NAME, 'img')
             continue
-            
         
-    if largest_image:
-        image_url = largest_image.get_attribute('src')
-
-        images_url_list.append(image_url)
-    else:
-        images_url_list.append(None)
-        
+        try:
+            image_url = largest_image.get_attribute('src')
+            images_url_list.append(image_url)
+        except:
+            images_url_list.append(None)
 
 df["urls"] = images_url_list
 df["categorization"] = [None] * len(images_url_list)
