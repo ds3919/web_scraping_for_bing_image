@@ -11,3 +11,6 @@ Run the following files in order:
 
 # Notes
 - Alternative libraries for retrieving images from links are available, but I used the chosen one due to installation constraints.
+
+# Future works
+- Add requirements
