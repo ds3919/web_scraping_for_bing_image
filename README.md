@@ -8,6 +8,8 @@ Run the following files in order:
 1. 1_scrapping_links.R
 2. 2_get_image_from_links.py
 3. 3_GUI.py
+4. 4_image_download.py
+5. 5_rectify.py
 
 # Notes
 - Alternative libraries for retrieving images from links are available, but I used the chosen one due to installation constraints.

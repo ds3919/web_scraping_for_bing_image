@@ -22,7 +22,7 @@ options.add_argument("--window-size=1920,1080")
 driver = webdriver.Chrome(options=options)
 
 images_url_list = []
-
+times_ran = 0
 for cat, link in tqdm(zip(categories, pages), total=len(categories)):
 
     url = link
@@ -46,14 +46,20 @@ for cat, link in tqdm(zip(categories, pages), total=len(categories)):
         except StaleElementReferenceException:
             images = driver.find_elements(By.TAG_NAME, 'img')
             continue
-        
+        times_ran += 1
         try:
             image_url = largest_image.get_attribute('src')
             images_url_list.append(image_url)
         except:
             images_url_list.append(None)
+        break
 
+print(len(df), len(images_url_list))
+print(times_ran)
 df["urls"] = images_url_list
+
+print(len(df), len(images_url_list))
+
 df["categorization"] = [None] * len(images_url_list)
 df_cleaned = df.dropna(subset=["urls"])
 
